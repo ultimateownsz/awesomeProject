@@ -6,6 +6,9 @@
     "d3": "^7.9.0",
     "vis-network": "^10.0.1"
   },
+  "devDependencies": {
+    "hugo-extended": "^0.154.2"
+  },
   "scripts": {
     "build": "hugo",
     "dev": "hugo server -D",

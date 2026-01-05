@@ -23,15 +23,15 @@ The graph view mimics Obsidian's graph functionality with D3.js providing intera
 
 ### Prerequisites
 
-- Hugo Extended v0.120.0 or later
-- Node.js v18 or later
+- Node.js v18 or later (Hugo is included as a dependency)
 
 ### Installation
 
 ```bash
 npm install
-hugo mod get && hugo mod tidy
 ```
+
+This will automatically install Hugo Extended and all dependencies.
 
 ### Development
 
