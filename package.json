@@ -1,5 +1,12 @@
 {
-  "dependencies": {
-    "vis-network": "^10.0.1"
-  }
+  "name": "awesomeProject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "hugo"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
