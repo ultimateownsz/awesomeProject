@@ -1,17 +1,12 @@
 {
-  "name": "awesome-project",
+  "name": "awesomeProject",
   "version": "1.0.0",
-  "description": "Graph-based static site for managing alternative GitHub Awesome list repositories",
-  "dependencies": {
-    "d3": "^7.9.0",
-    "vis-network": "^10.0.1"
-  },
-  "devDependencies": {
-    "hugo-extended": "^0.154.2"
-  },
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "build": "hugo",
-    "dev": "hugo server -D",
-    "clean": "rm -rf public resources"
-  }
+    "build": "hugo"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
