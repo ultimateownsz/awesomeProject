@@ -1,4 +1,188 @@
 {{ define "main" }}
+<style>
+  article {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+  }
+  
+  article header {
+    margin-bottom: 2rem;
+  }
+  
+  article h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    line-height: 1.2;
+  }
+  
+  article time {
+    font-size: 0.9rem;
+    color: var(--link-color);
+    font-weight: 400;
+  }
+  
+  .content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+  
+  .content h1, .content h2, .content h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+  }
+  
+  .content h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+  }
+  
+  .content h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  
+  .content p {
+    margin-bottom: 1rem;
+  }
+  
+  .content ul, .content ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+  
+  .content li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .content a {
+    color: #667eea;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  
+  .content a:hover {
+    border-bottom-color: #667eea;
+  }
+  
+  .content code {
+    background: var(--border-color);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  }
+  
+  .content pre {
+    background: var(--footer-bg);
+    padding: 1rem;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .content pre code {
+    background: none;
+    padding: 0;
+  }
+  
+  .meta-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+  }
+  
+  .tags {
+    margin-bottom: 2rem;
+  }
+  
+  .tags strong {
+    display: block;
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+    color: var(--link-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .tag {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: transparent;
+    color: #667eea;
+    border: 1px solid #667eea;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .tag:hover {
+    background: #667eea;
+    color: white;
+  }
+  
+  .related-links {
+    margin-top: 2rem;
+  }
+  
+  .related-links h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+  }
+  
+  .related-links ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .related-links li {
+    margin-bottom: 0.7rem;
+  }
+  
+  .related-links a {
+    color: #667eea;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.2s;
+    display: inline-block;
+  }
+  
+  .related-links a:hover {
+    color: #5568d3;
+  }
+  
+  .related-links a::before {
+    content: "→ ";
+    margin-right: 0.3rem;
+  }
+  
+  @media (max-width: 768px) {
+    article {
+      padding: 2rem 1.5rem;
+    }
+    
+    article h1 {
+      font-size: 2rem;
+    }
+    
+    .content {
+      font-size: 1rem;
+    }
+  }
+</style>
+
 <article>
   <header>
     <h1>{{ .Title }}</h1>
@@ -11,23 +195,29 @@
     {{ .Content }}
   </div>
   
-  {{ if .Params.tags }}
-  <div class="tags">
-    <strong>Tags:</strong>
-    {{ range .Params.tags }}
-    <span class="tag">{{ . }}</span>
+  {{ if or .Params.tags .Params.links }}
+  <div class="meta-section">
+    {{ if .Params.tags }}
+    <div class="tags">
+      <strong>Topics</strong>
+      <div>
+        {{ range .Params.tags }}
+        <span class="tag">{{ . }}</span>
+        {{ end }}
+      </div>
+    </div>
     {{ end }}
-  </div>
-  {{ end }}
-  
-  {{ if .Params.links }}
-  <div class="related-links">
-    <h2>Related Resources</h2>
-    <ul>
-      {{ range .Params.links }}
-      <li><a href="{{ .url }}">{{ .name }}</a></li>
-      {{ end }}
-    </ul>
+    
+    {{ if .Params.links }}
+    <div class="related-links">
+      <h2>Related</h2>
+      <ul>
+        {{ range .Params.links }}
+        <li><a href="{{ .url }}">{{ .name }}</a></li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
   </div>
   {{ end }}
 </article>
