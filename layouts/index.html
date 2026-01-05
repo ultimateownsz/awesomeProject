@@ -40,7 +40,7 @@
         <p>{{ .Params.description | default .Summary }}</p>
         {{ if .Params.tags }}
         <div class="tags">
-          {{ range first 3 .Params.tags }}
+          {{ range .Params.tags }}
           <span class="tag">{{ . }}</span>
           {{ end }}
         </div>
