@@ -192,18 +192,28 @@
   }
   
   .tags {
-    margin-top: 10px;
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
   }
   
   .tag {
     display: inline-block;
-    padding: 4px 12px;
-    background: #e3f2fd;
-    color: #1976d2;
-    border-radius: 15px;
-    font-size: 12px;
-    margin-right: 5px;
-    margin-bottom: 5px;
+    padding: 3px 10px;
+    background: transparent;
+    color: #667eea;
+    border: 1px solid #667eea;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .tag:hover {
+    background: #667eea;
+    color: white;
   }
   
   .cta {
