@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default "en" }}" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+  {{ if .Description }}
+  <meta name="description" content="{{ .Description }}">
+  {{ end }}
+  
+  <!-- Custom CSS for graph page -->
+  {{ if eq .Type "graph" }}
+  <link rel="stylesheet" href="/css/graph.css">
+  {{ end }}
+  
+  <!-- Sticky navigation styles -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #333;
+      --header-bg: rgba(255, 255, 255, 0.95);
+      --border-color: rgba(0, 0, 0, 0.1);
+      --link-color: #666;
+      --link-hover: #000;
+      --footer-bg: #f8f9fa;
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --accent-color: #667eea;
+      --accent-hover: #5568d3;
+    }
+    
+    [data-theme="dark"] {
+      --bg-color: #1a1a1a;
+      --text-color: #e0e0e0;
+      --header-bg: rgba(26, 26, 26, 0.95);
+      --border-color: rgba(255, 255, 255, 0.1);
+      --link-color: #b0b0b0;
+      --link-hover: #fff;
+      --footer-bg: #2a2a2a;
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --accent-color: #7c8aff;
+      --accent-hover: #9ca8ff;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background: var(--bg-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--header-bg);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 2px 8px var(--shadow-color);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    
+    nav a {
+      text-decoration: none;
+      color: var(--link-color);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0.5rem 0;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+    
+    nav a:hover {
+      color: var(--link-hover);
+    }
+    
+    nav a:first-child {
+      font-weight: 600;
+      color: var(--link-hover);
+      margin-right: auto;
+    }
+    
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: var(--text-color);
+    }
+    
+    .theme-toggle:hover {
+      background: var(--border-color);
+    }
+    
+    main {
+      min-height: calc(100vh - 120px);
+    }
+    
+    footer {
+      background: var(--footer-bg);
+      padding: 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border-color);
+      margin-top: 4rem;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    footer p {
+      color: var(--link-color);
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      nav {
+        padding: 1rem;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      
+      nav a {
+        font-size: 13px;
+      }
+      
+      .theme-toggle {
+        margin-left: auto;
+      }
+    }
+  </style>
+  
+  {{ block "head" . }}{{ end }}
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">{{ .Site.Title }}</a>
+      {{ range .Site.Menus.main }}
+      <a href="{{ .URL }}">{{ .Name }}</a>
+      {{ end }}
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span id="themeIcon">🌙</span>
+      </button>
+    </nav>
+  </header>
+  
+  <main>
+    {{ block "main" . }}{{ end }}
+  </main>
+  
+  <footer>
+    <p>{{ .Site.Params.copyright | default .Site.Title }} &copy; {{ now.Year }}</p>
+  </footer>
+  
+  <script>
+    (function() {
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcon = document.getElementById('themeIcon');
+      const html = document.documentElement;
+      
+      // Check for saved theme preference or default to 'light'
+      const currentTheme = localStorage.getItem('theme') || 'light';
+      html.setAttribute('data-theme', currentTheme);
+      updateIcon(currentTheme);
+      
+      themeToggle.addEventListener('click', function() {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateIcon(newTheme);
+      });
+      
+      function updateIcon(theme) {
+        themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+      }
+    })();
+  </script>
+</body>
+</html>

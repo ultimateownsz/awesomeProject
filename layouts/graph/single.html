@@ -1,0 +1,84 @@
+{{ define "main" }}
+<div class="graph-container">
+  <div class="graph-header">
+    <h1>{{ .Title }}</h1>
+    <div class="graph-description">
+      {{ .Content }}
+    </div>
+  </div>
+  
+  <div class="graph-controls">
+    <button id="reset-zoom" class="control-btn">Reset View</button>
+    <button id="toggle-labels" class="control-btn">Toggle Labels</button>
+    <select id="layout-select" class="control-select">
+      <option value="force">Force Layout</option>
+      <option value="hierarchical">Hierarchical</option>
+      <option value="circular">Circular</option>
+    </select>
+  </div>
+  
+  <div id="graph-visualization" class="graph-canvas"></div>
+  
+  <div class="graph-legend">
+    <h3>Legend</h3>
+    <div class="legend-item">
+      <span class="legend-color" style="background: #3498db;"></span>
+      <span>Programming Languages</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color" style="background: #2ecc71;"></span>
+      <span>Tools & Frameworks</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color" style="background: #e74c3c;"></span>
+      <span>Web Development</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-color" style="background: #9b59b6;"></span>
+      <span>Data Science</span>
+    </div>
+  </div>
+</div>
+
+<!-- Load D3.js from local vendor directory -->
+<script src="/js/vendor/d3.min.js"></script>
+
+<!-- Graph Data -->
+<script>
+  // Generate graph data from Hugo content
+  window.graphData = {
+    nodes: [
+      {{ range where .Site.Pages "Type" "categories" }}
+      {{ if ne .File.ContentBaseName "_index" }}
+      {
+        id: "{{ .File.ContentBaseName }}",
+        label: "{{ .Title }}",
+        url: "{{ .RelPermalink }}",
+        color: "{{ .Params.color | default "#95a5a6" }}",
+        description: "{{ .Params.description | default .Summary }}",
+        category: "{{ .Params.category | default .Title }}",
+        tags: {{ .Params.tags | jsonify }}
+      },
+      {{ end }}
+      {{ end }}
+    ],
+    edges: [
+      {{ range where .Site.Pages "Type" "categories" }}
+      {{ if ne .File.ContentBaseName "_index" }}
+      {{ $source := .File.ContentBaseName }}
+      {{ range .Params.links }}
+      {
+        source: "{{ $source }}",
+        target: "{{ path.Base .url }}",
+        label: "{{ .name }}"
+      },
+      {{ end }}
+      {{ end }}
+      {{ end }}
+    ]
+  };
+</script>
+
+<!-- Load graph visualization script -->
+<script src="/js/graph.js"></script>
+{{ end }}
