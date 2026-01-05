@@ -1,0 +1,235 @@
+{{ define "main" }}
+<div class="home">
+  <section class="hero">
+    <h1>{{ .Site.Title }}</h1>
+    <p class="tagline">Interactive Graph-Based Awesome List</p>
+    <p>Explore curated resources organized in an interactive graph visualization</p>
+    <a href="/graph" class="cta-button">View Graph</a>
+  </section>
+  
+  <section class="features">
+    <h2>Features</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <h3>🌐 Interactive Graph</h3>
+        <p>Navigate through categories using an Obsidian-like graph view</p>
+      </div>
+      <div class="feature">
+        <h3>📚 Organized Categories</h3>
+        <p>Browse resources organized by programming languages, frameworks, and tools</p>
+      </div>
+      <div class="feature">
+        <h3>🔗 Connected Resources</h3>
+        <p>Discover relationships between different technologies and topics</p>
+      </div>
+      <div class="feature">
+        <h3>⚡ Fast & Static</h3>
+        <p>Built with Hugo for blazing-fast performance</p>
+      </div>
+    </div>
+  </section>
+  
+  {{ if .Site.Params.home.showRecentNotes }}
+  <section class="recent-content">
+    <h2>Recent Categories</h2>
+    <div class="recent-list">
+      {{ range first (.Site.Params.home.recentNotesLimit | default 5) (where .Site.Pages "Type" "categories") }}
+      {{ if ne .File.ContentBaseName "_index" }}
+      <article class="recent-item">
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p>{{ .Params.description | default .Summary }}</p>
+        {{ if .Params.tags }}
+        <div class="tags">
+          {{ range first 3 .Params.tags }}
+          <span class="tag">{{ . }}</span>
+          {{ end }}
+        </div>
+        {{ end }}
+      </article>
+      {{ end }}
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+  
+  <section class="cta">
+    <h2>Start Exploring</h2>
+    <p>Discover amazing resources in an interactive way</p>
+    <div class="cta-buttons">
+      <a href="/graph" class="cta-button primary">View Graph</a>
+      <a href="/categories" class="cta-button secondary">Browse Categories</a>
+    </div>
+  </section>
+</div>
+
+<style>
+  .home {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .hero {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+    margin-bottom: 40px;
+  }
+  
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+  
+  .hero .tagline {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    opacity: 0.9;
+  }
+  
+  .hero p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    opacity: 0.8;
+  }
+  
+  .cta-button {
+    display: inline-block;
+    padding: 12px 30px;
+    background: white;
+    color: #667eea;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    margin: 5px;
+  }
+  
+  .cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+  .cta-button.primary {
+    background: #667eea;
+    color: white;
+  }
+  
+  .cta-button.secondary {
+    background: white;
+    color: #667eea;
+    border: 2px solid #667eea;
+  }
+  
+  .features {
+    margin-bottom: 60px;
+  }
+  
+  .features h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+  
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+  }
+  
+  .feature {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .feature h3 {
+    margin-bottom: 10px;
+    color: #667eea;
+  }
+  
+  .recent-content {
+    margin-bottom: 60px;
+  }
+  
+  .recent-content h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .recent-list {
+    display: grid;
+    gap: 20px;
+  }
+  
+  .recent-item {
+    padding: 20px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .recent-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  
+  .recent-item h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  
+  .recent-item a {
+    color: #667eea;
+    text-decoration: none;
+  }
+  
+  .recent-item a:hover {
+    text-decoration: underline;
+  }
+  
+  .tags {
+    margin-top: 10px;
+  }
+  
+  .tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #e3f2fd;
+    color: #1976d2;
+    border-radius: 15px;
+    font-size: 12px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+  }
+  
+  .cta {
+    text-align: center;
+    padding: 60px 20px;
+    background: #f8f9fa;
+    border-radius: 15px;
+  }
+  
+  .cta h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .cta-buttons {
+    margin-top: 30px;
+  }
+  
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 2rem;
+    }
+    
+    .hero .tagline {
+      font-size: 1.2rem;
+    }
+  }
+</style>
+{{ end }}

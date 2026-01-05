@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default "en" }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+  {{ if .Description }}
+  <meta name="description" content="{{ .Description }}">
+  {{ end }}
+  
+  <!-- Custom CSS for graph page -->
+  {{ if eq .Type "graph" }}
+  <link rel="stylesheet" href="/css/graph.css">
+  {{ end }}
+  
+  {{ block "head" . }}{{ end }}
+</head>
+<body>
+  <header>
+    <nav>
+      {{ range .Site.Menus.main }}
+      <a href="{{ .URL }}">{{ .Name }}</a>
+      {{ end }}
+    </nav>
+  </header>
+  
+  <main>
+    {{ block "main" . }}{{ end }}
+  </main>
+  
+  <footer>
+    <p>{{ .Site.Params.copyright | default .Site.Title }} &copy; {{ now.Year }}</p>
+  </footer>
+</body>
+</html>

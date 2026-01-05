@@ -1,0 +1,34 @@
+{{ define "main" }}
+<article>
+  <header>
+    <h1>{{ .Title }}</h1>
+    {{ if .Date }}
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+    {{ end }}
+  </header>
+  
+  <div class="content">
+    {{ .Content }}
+  </div>
+  
+  {{ if .Params.tags }}
+  <div class="tags">
+    <strong>Tags:</strong>
+    {{ range .Params.tags }}
+    <span class="tag">{{ . }}</span>
+    {{ end }}
+  </div>
+  {{ end }}
+  
+  {{ if .Params.links }}
+  <div class="related-links">
+    <h2>Related Resources</h2>
+    <ul>
+      {{ range .Params.links }}
+      <li><a href="{{ .url }}">{{ .name }}</a></li>
+      {{ end }}
+    </ul>
+  </div>
+  {{ end }}
+</article>
+{{ end }}
