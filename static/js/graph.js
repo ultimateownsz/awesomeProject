@@ -10,13 +10,31 @@
 
   const data = window.graphData;
   
-  // Remove trailing commas from nodes and edges arrays
-  data.nodes = data.nodes.filter(n => n && n.id);
-  data.edges = data.edges.filter(e => e && e.source && e.target);
+  // Clean and process nodes
+  data.nodes = data.nodes.filter(n => n && n.id).map(n => {
+    // Parse tags if it's a string
+    if (typeof n.tags === 'string') {
+      try {
+        n.tags = JSON.parse(n.tags);
+      } catch (e) {
+        n.tags = [];
+      }
+    }
+    if (!Array.isArray(n.tags)) {
+      n.tags = [];
+    }
+    return n;
+  });
+  
+  // Clean and process edges - filter out invalid targets
+  const nodeIds = new Set(data.nodes.map(n => n.id));
+  data.edges = data.edges
+    .filter(e => e && e.source && e.target)
+    .filter(e => nodeIds.has(e.source) && nodeIds.has(e.target));
 
   // Configuration
   const config = {
-    width: window.innerWidth - 40,
+    width: Math.max(600, window.innerWidth - 40),
     height: Math.max(600, window.innerHeight - 300),
     nodeRadius: 20,
     linkDistance: 150,
@@ -298,7 +316,7 @@
 
   // Handle window resize
   window.addEventListener('resize', () => {
-    config.width = window.innerWidth - 40;
+    config.width = Math.max(600, window.innerWidth - 40);
     config.height = Math.max(600, window.innerHeight - 300);
     svg.attr('width', config.width).attr('height', config.height);
     svg.attr('viewBox', [0, 0, config.width, config.height]);
