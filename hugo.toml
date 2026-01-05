@@ -54,7 +54,6 @@ showCategoryFilter = true
 [params.footer]
 creativeCommonsLicense = 'by_sa'
 showCreativeCommonsIcons = true
-showThemeCredit = false
 
 [params.robotstxt]
 blockCC = false
