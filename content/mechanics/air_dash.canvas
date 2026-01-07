@@ -1,0 +1,17 @@
+{
+  "nodes": [
+    {
+      "id": "air_dash",
+      "type": "text",
+      "x": 900,
+      "y": 100,
+      "width": 300,
+      "height": 200,
+      "text": "# Air Dash\n\n- **Description**: Quick horizontal movement while airborne.\n- **Use Case**: Action games, Platformers.\n- **Difficulty**: Medium\n\n## Implementation Notes\n- Disable gravity during dash\n- Apply velocity in input direction\n- Set dash duration timer\n\n## References\n- [Mega Man X Dash Analysis](https://megaman.capcom.com)\n- [Celeste Dash Mechanics](https://celestegame.com)",
+      "color": "#9b59b6",
+      "image": "https://media.giphy.com/media/3o7btNa0RUYa5E7iiQ/giphy.gif",
+      "imageAlt": "Air dash animation from Mega Man X"
+    }
+  ],
+  "edges": []
+}

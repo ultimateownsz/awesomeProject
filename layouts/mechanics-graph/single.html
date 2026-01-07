@@ -1,5 +1,5 @@
 {{ define "main" }}
-<div class="graph-container">
+<div class="graph-container mechanics-graph-container">
   <div class="graph-header">
     <h1>{{ .Title }}</h1>
     <div class="graph-description">
@@ -15,34 +15,12 @@
       <option value="hierarchical">Hierarchical</option>
       <option value="circular">Circular</option>
     </select>
-    <select id="filter-select" class="control-select">
-      <option value="all">All Nodes</option>
-      <option value="categories">Categories Only</option>
-      <option value="mechanics">Mechanics Only</option>
-    </select>
   </div>
   
-  <div id="graph-visualization" class="graph-canvas"></div>
+  <div id="mechanics-graph-visualization" class="graph-canvas"></div>
   
-  <div class="graph-legend">
-    <h3>Categories</h3>
-    <div class="legend-item">
-      <span class="legend-color" style="background: #3498db;"></span>
-      <span>Programming Languages</span>
-    </div>
-    <div class="legend-item">
-      <span class="legend-color" style="background: #2ecc71;"></span>
-      <span>Tools & Frameworks</span>
-    </div>
-    <div class="legend-item">
-      <span class="legend-color" style="background: #e74c3c;"></span>
-      <span>Web Development</span>
-    </div>
-    <div class="legend-item">
-      <span class="legend-color" style="background: #9b59b6;"></span>
-      <span>Data Science</span>
-    </div>
-    <h3 style="margin-top: 15px;">Game Mechanics</h3>
+  <div class="graph-legend mechanics-legend">
+    <h3>Mechanic Types</h3>
     <div class="legend-item">
       <span class="legend-color" style="background: #e74c3c;"></span>
       <span>Movement - Wall</span>
@@ -69,50 +47,24 @@
 </div>
 
 <!-- Load D3.js from local vendor directory -->
-<script src="/js/vendor/d3.min.js"></script>
+<link rel="stylesheet" href="/css/graph.css">
 <link rel="stylesheet" href="/css/mechanics-graph.css">
+<script src="/js/vendor/d3.min.js"></script>
 
-<!-- Graph Data - Combined Categories and Mechanics using JSONCanvas format -->
+<!-- JSONCanvas Data from mechanic files -->
 <script>
-  // Generate graph data from Hugo content (Categories)
-  // Combined with JSONCanvas mechanics data for unified visualization
-  window.graphData = {
-    nodes: [
-      // Category nodes from Hugo content
-      {{ range where .Site.Pages "Type" "categories" }}
-      {{ if ne .File.ContentBaseName "_index" }}
-      {
-        id: "{{ .File.ContentBaseName }}",
-        label: "{{ .Title }}",
-        url: "{{ .RelPermalink }}",
-        color: "{{ .Params.color | default "#95a5a6" }}",
-        description: "{{ .Params.description | default .Summary }}",
-        category: "{{ .Params.category | default .Title }}",
-        tags: {{ .Params.tags | jsonify }},
-        nodeType: "category"
-      },
-      {{ end }}
-      {{ end }}
-    ],
-    edges: [
-      // Category edges from Hugo content
-      {{ range where .Site.Pages "Type" "categories" }}
-      {{ if ne .File.ContentBaseName "_index" }}
-      {{ $source := .File.ContentBaseName }}
-      {{ range .Params.links }}
-      {
-        source: "{{ $source }}",
-        target: "{{ path.Base .url }}",
-        label: "{{ .name }}"
-      },
-      {{ end }}
-      {{ end }}
-      {{ end }}
-    ]
-  };
-
-  // JSONCanvas Mechanics Data - following the official JSONCanvas specification
-  // See: https://github.com/obsidianmd/jsoncanvas
+  // JSONCanvas mechanics data - embedded during Hugo build from .canvas files
+  // Note: This data is intentionally embedded at build time for static site generation.
+  // For dynamic loading, consider using Hugo's data templates or a JavaScript fetch approach.
+  // The .canvas files in /content/mechanics/ serve as the source of truth for this data.
+  //
+  // HOW TO ADD YOUR OWN MECHANICS:
+  // 1. Create a new .canvas file in /content/mechanics/ (e.g., your_mechanic.canvas)
+  // 2. Follow the JSONCanvas format with nodes and edges arrays
+  // 3. Each node needs: id, type, x, y, width, height, text, color
+  // 4. Optional: Add image/imageAlt for visual preview
+  // 5. Add edges to connect to other mechanics with labels like "combo", "extends", "alternative"
+  // 6. Rebuild the site to see your changes
   window.mechanicsCanvasData = {
     nodes: [
       {
@@ -193,6 +145,6 @@
   };
 </script>
 
-<!-- Load combined graph visualization script -->
-<script src="/js/combined-graph.js"></script>
+<!-- Load mechanics graph visualization script -->
+<script src="/js/mechanics-graph.js"></script>
 {{ end }}

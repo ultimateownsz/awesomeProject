@@ -1,0 +1,26 @@
+{
+  "nodes": [
+    {
+      "id": "ground_pound",
+      "type": "text",
+      "x": 100,
+      "y": 400,
+      "width": 300,
+      "height": 200,
+      "text": "# Ground Pound\n\n- **Description**: Rapidly descend and impact the ground.\n- **Use Case**: Platformers, Action games.\n- **Difficulty**: Easy\n\n## Implementation Notes\n- Cancel horizontal momentum\n- Apply strong downward force\n- Trigger impact effect on landing\n\n## References\n- [Mario Ground Pound History](https://mario.nintendo.com)\n- [Super Mario Odyssey](https://supermariobrothers.io)",
+      "color": "#f39c12",
+      "image": "https://media.giphy.com/media/FWcoE5AkG3BRe/giphy.gif",
+      "imageAlt": "Mario ground pound animation"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_pound_to_wall",
+      "fromNode": "ground_pound",
+      "fromSide": "top",
+      "toNode": "wall_jump",
+      "toSide": "bottom",
+      "label": "alternative"
+    }
+  ]
+}

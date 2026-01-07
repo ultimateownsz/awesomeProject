@@ -1,0 +1,26 @@
+{
+  "nodes": [
+    {
+      "id": "wall_jump",
+      "type": "text",
+      "x": 100,
+      "y": 100,
+      "width": 300,
+      "height": 200,
+      "text": "# Wall Jump\n\n- **Description**: Allows the player to jump off walls.\n- **Use Case**: Platformers, Metroidvanias.\n- **Difficulty**: Medium\n\n## Implementation Notes\n- Detect wall collision\n- Apply horizontal force away from wall\n- Reset jump counter\n\n## References\n- [Celeste Wall Jump Analysis](https://celestegame.com)\n- [Hollow Knight Movement](https://hollowknight.com)",
+      "color": "#e74c3c",
+      "image": "https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif",
+      "imageAlt": "Wall jump animation from Celeste"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_wall_to_double",
+      "fromNode": "wall_jump",
+      "fromSide": "right",
+      "toNode": "double_jump",
+      "toSide": "left",
+      "label": "combo"
+    }
+  ]
+}
