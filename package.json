@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "hugo-extended": "^0.154.2"
+  },
+  "dependencies": {
+    "@trbn/jsoncanvas": "^1.0.6"
   }
 }
