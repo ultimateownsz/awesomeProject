@@ -26,6 +26,14 @@ weight = 40
 name = 'Add Category'
 pageRef = '/add-category'
 weight = 50
+[[menus.main]]
+name = 'Mechanics'
+pageRef = '/mechanics'
+weight = 55
+[[menus.main]]
+name = 'Mechanics Graph'
+pageRef = '/mechanics-graph'
+weight = 56
 
 [markup]
 [markup.highlight]

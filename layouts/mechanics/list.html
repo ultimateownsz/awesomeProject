@@ -1,0 +1,176 @@
+{{ define "main" }}
+<div class="mechanics-container">
+  <div class="mechanics-header">
+    <h1>{{ .Title }}</h1>
+    <div class="mechanics-description">
+      {{ .Content }}
+    </div>
+  </div>
+  
+  <div class="mechanics-list">
+    <h2>Available Mechanics</h2>
+    <div class="mechanics-grid" id="mechanics-list">
+      <!-- Mechanics will be loaded dynamically from canvas files -->
+      <p class="loading">Loading mechanics...</p>
+    </div>
+  </div>
+  
+  <div class="cta-section">
+    <a href="/mechanics-graph" class="cta-button">View Mechanics Graph</a>
+  </div>
+</div>
+
+<style>
+  .mechanics-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .mechanics-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .mechanics-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--text-color, #2c3e50);
+  }
+  
+  .mechanics-description {
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--link-color, #7f8c8d);
+    line-height: 1.6;
+  }
+  
+  .mechanics-list h2 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: var(--text-color, #2c3e50);
+  }
+  
+  .mechanics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .mechanic-card {
+    background: var(--bg-color, white);
+    border: 2px solid var(--border-color, #e0e0e0);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .mechanic-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    border-color: var(--accent-color, #667eea);
+  }
+  
+  .mechanic-card h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.3rem;
+    color: var(--text-color, #2c3e50);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .mechanic-card .color-indicator {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  
+  .mechanic-card p {
+    margin: 0;
+    color: var(--link-color, #7f8c8d);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  
+  .mechanic-card .connections {
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--accent-color, #667eea);
+  }
+  
+  .cta-section {
+    text-align: center;
+    margin-top: 40px;
+  }
+  
+  .cta-button {
+    display: inline-block;
+    padding: 14px 32px;
+    background: var(--accent-color, #667eea);
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .cta-button:hover {
+    background: var(--accent-hover, #5568d3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+  
+  .loading {
+    color: var(--link-color, #7f8c8d);
+    font-style: italic;
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+  }
+  
+  @media (max-width: 768px) {
+    .mechanics-header h1 {
+      font-size: 2rem;
+    }
+    
+    .mechanics-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Load mechanics from canvas files
+  (function() {
+    const mechanicsData = {{ .Site.Data.mechanics | jsonify | default "null" }};
+    const container = document.getElementById('mechanics-list');
+    
+    // Static list of mechanics for now - in production this would be loaded dynamically
+    const mechanics = [
+      { id: 'wall_jump', name: 'Wall Jump', color: '#e74c3c', description: 'Allows the player to jump off walls.', connections: 1 },
+      { id: 'double_jump', name: 'Double Jump', color: '#3498db', description: 'Allows the player to jump again while in mid-air.', connections: 1 },
+      { id: 'air_dash', name: 'Air Dash', color: '#9b59b6', description: 'Quick horizontal movement while airborne.', connections: 0 },
+      { id: 'ground_pound', name: 'Ground Pound', color: '#f39c12', description: 'Rapidly descend and impact the ground.', connections: 1 }
+    ];
+    
+    if (mechanics.length > 0) {
+      container.innerHTML = mechanics.map(m => `
+        <div class="mechanic-card" onclick="window.location.href='/mechanics-graph#${m.id}'">
+          <h3>
+            <span class="color-indicator" style="background: ${m.color};"></span>
+            ${m.name}
+          </h3>
+          <p>${m.description}</p>
+          <div class="connections">${m.connections} connection${m.connections !== 1 ? 's' : ''}</div>
+        </div>
+      `).join('');
+    } else {
+      container.innerHTML = '<p>No mechanics found. Add .canvas files to the /content/mechanics directory.</p>';
+    }
+  })();
+</script>
+{{ end }}

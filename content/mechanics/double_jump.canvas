@@ -1,0 +1,24 @@
+{
+  "nodes": [
+    {
+      "id": "double_jump",
+      "type": "text",
+      "x": 500,
+      "y": 100,
+      "width": 300,
+      "height": 200,
+      "text": "# Double Jump\n\n- **Description**: Allows the player to jump again while in mid-air.\n- **Use Case**: Platformers, Action games.\n- **Difficulty**: Easy\n\n## Implementation Notes\n- Track jump count\n- Allow second jump only when airborne\n- Optional: different jump height\n\n## References\n- [Double Jump Mechanics Guide](https://example.com)",
+      "color": "#3498db"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_double_to_dash",
+      "fromNode": "double_jump",
+      "fromSide": "right",
+      "toNode": "air_dash",
+      "toSide": "left",
+      "label": "extends"
+    }
+  ]
+}
