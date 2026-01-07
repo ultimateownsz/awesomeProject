@@ -364,22 +364,44 @@
     nodeGroup.selectAll('circle').style('opacity', 1);
   }
 
+  // Sanitize URL to prevent XSS - only allow http/https URLs
+  function sanitizeUrl(url) {
+    if (!url) return '';
+    try {
+      const parsed = new URL(url);
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        return url;
+      }
+    } catch (e) {
+      // Invalid URL
+    }
+    return '';
+  }
+
+  // Escape HTML to prevent XSS
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
   // Show mechanic detail panel
   function showMechanicDetail(mechanic) {
     const panel = document.getElementById('mechanic-detail-panel');
     const content = document.getElementById('mechanic-detail-content');
     
-    // Build image HTML if available
-    const imageHtml = mechanic.image ? `
+    // Build image HTML if available (with URL sanitization)
+    const safeImageUrl = sanitizeUrl(mechanic.image);
+    const imageHtml = safeImageUrl ? `
       <div class="mechanic-visual">
-        <img src="${mechanic.image}" alt="${mechanic.imageAlt || mechanic.label}" class="mechanic-gif" loading="lazy">
-        <p class="image-caption">${mechanic.imageAlt || 'Visual demonstration'}</p>
+        <img src="${safeImageUrl}" alt="${escapeHtml(mechanic.imageAlt || mechanic.label)}" class="mechanic-gif" loading="lazy">
+        <p class="image-caption">${escapeHtml(mechanic.imageAlt || 'Visual demonstration')}</p>
       </div>
     ` : '';
     
     content.innerHTML = `
       <div class="mechanic-detail-header" style="border-left: 4px solid ${mechanic.color}; padding-left: 15px;">
-        <h2>${mechanic.label}</h2>
+        <h2>${escapeHtml(mechanic.label)}</h2>
       </div>
       ${imageHtml}
       <div class="mechanic-detail-body">
@@ -392,14 +414,14 @@
       <div class="mechanic-instructions">
         <h4>📝 Create Your Own</h4>
         <p>Add your own mechanics by creating a <code>.canvas</code> file in <code>/content/mechanics/</code></p>
-        <a href="#" onclick="showCanvasTemplate(); return false;" class="template-link">View Template →</a>
+        <button onclick="showCanvasTemplate()" class="template-link">View Template →</button>
       </div>
     `;
     
     panel.classList.remove('hidden');
   }
   
-  // Show canvas file template
+  // Show canvas file template in a modal
   window.showCanvasTemplate = function() {
     const template = `{
   "nodes": [
@@ -425,7 +447,22 @@
     }
   ]
 }`;
-    alert('JSONCanvas Template:\n\n' + template);
+    
+    // Create modal element
+    const modal = document.createElement('div');
+    modal.className = 'template-modal';
+    modal.innerHTML = \`
+      <div class="template-modal-content">
+        <div class="template-modal-header">
+          <h3>JSONCanvas Template</h3>
+          <button class="template-modal-close" onclick="this.closest('.template-modal').remove()">&times;</button>
+        </div>
+        <p>Save this as a <code>.canvas</code> file in <code>/content/mechanics/</code></p>
+        <pre class="template-code">\${template}</pre>
+        <button class="copy-template-btn" onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent); this.textContent='Copied!';">Copy to Clipboard</button>
+      </div>
+    \`;
+    document.body.appendChild(modal);
   };
   
   function getConnectionsHtml(mechanic) {
