@@ -7,8 +7,10 @@
       "y": 100,
       "width": 300,
       "height": 200,
-      "text": "# Double Jump\n\n- **Description**: Allows the player to jump again while in mid-air.\n- **Use Case**: Platformers, Action games.\n- **Difficulty**: Easy\n\n## Implementation Notes\n- Track jump count\n- Allow second jump only when airborne\n- Optional: different jump height\n\n## References\n- [Double Jump Mechanics Guide](https://example.com)",
-      "color": "#3498db"
+      "text": "# Double Jump\n\n- **Description**: Allows the player to jump again while in mid-air.\n- **Use Case**: Platformers, Action games.\n- **Difficulty**: Easy\n\n## Implementation Notes\n- Track jump count\n- Allow second jump only when airborne\n- Optional: different jump height\n\n## References\n- [Ori Double Jump](https://www.orithegame.com)\n- [Shovel Knight Guide](https://yachtclubgames.com)",
+      "color": "#3498db",
+      "image": "https://media.giphy.com/media/xT9IgzoKnwFNmISR8I/giphy.gif",
+      "imageAlt": "Double jump animation example"
     }
   ],
   "edges": [

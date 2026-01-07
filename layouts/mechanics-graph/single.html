@@ -57,6 +57,14 @@
   // Note: This data is intentionally embedded at build time for static site generation.
   // For dynamic loading, consider using Hugo's data templates or a JavaScript fetch approach.
   // The .canvas files in /content/mechanics/ serve as the source of truth for this data.
+  //
+  // HOW TO ADD YOUR OWN MECHANICS:
+  // 1. Create a new .canvas file in /content/mechanics/ (e.g., your_mechanic.canvas)
+  // 2. Follow the JSONCanvas format with nodes and edges arrays
+  // 3. Each node needs: id, type, x, y, width, height, text, color
+  // 4. Optional: Add image/imageAlt for visual preview
+  // 5. Add edges to connect to other mechanics with labels like "combo", "extends", "alternative"
+  // 6. Rebuild the site to see your changes
   window.mechanicsCanvasData = {
     nodes: [
       {
@@ -66,8 +74,10 @@
         y: 100,
         width: 300,
         height: 200,
-        text: "# Wall Jump\n\n- **Description**: Allows the player to jump off walls.\n- **Use Case**: Platformers, Metroidvanias.\n- **Difficulty**: Medium\n\n## Implementation Notes\n- Detect wall collision\n- Apply horizontal force away from wall\n- Reset jump counter\n\n## References\n- [Celeste Wall Jump Analysis](https://example.com)",
-        color: "#e74c3c"
+        text: "# Wall Jump\n\n- **Description**: Allows the player to jump off walls.\n- **Use Case**: Platformers, Metroidvanias.\n- **Difficulty**: Medium\n\n## Implementation Notes\n- Detect wall collision\n- Apply horizontal force away from wall\n- Reset jump counter\n\n## References\n- [Celeste Wall Jump Analysis](https://celestegame.com)\n- [Hollow Knight Movement](https://hollowknight.com)",
+        color: "#e74c3c",
+        image: "https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif",
+        imageAlt: "Wall jump animation from Celeste"
       },
       {
         id: "double_jump",
@@ -76,8 +86,10 @@
         y: 100,
         width: 300,
         height: 200,
-        text: "# Double Jump\n\n- **Description**: Allows the player to jump again while in mid-air.\n- **Use Case**: Platformers, Action games.\n- **Difficulty**: Easy\n\n## Implementation Notes\n- Track jump count\n- Allow second jump only when airborne\n- Optional: different jump height\n\n## References\n- [Double Jump Mechanics Guide](https://example.com)",
-        color: "#3498db"
+        text: "# Double Jump\n\n- **Description**: Allows the player to jump again while in mid-air.\n- **Use Case**: Platformers, Action games.\n- **Difficulty**: Easy\n\n## Implementation Notes\n- Track jump count\n- Allow second jump only when airborne\n- Optional: different jump height\n\n## References\n- [Ori Double Jump](https://www.orithegame.com)\n- [Shovel Knight Guide](https://yachtclubgames.com)",
+        color: "#3498db",
+        image: "https://media.giphy.com/media/xT9IgzoKnwFNmISR8I/giphy.gif",
+        imageAlt: "Double jump animation example"
       },
       {
         id: "air_dash",
@@ -86,8 +98,10 @@
         y: 100,
         width: 300,
         height: 200,
-        text: "# Air Dash\n\n- **Description**: Quick horizontal movement while airborne.\n- **Use Case**: Action games, Platformers.\n- **Difficulty**: Medium\n\n## Implementation Notes\n- Disable gravity during dash\n- Apply velocity in input direction\n- Set dash duration timer\n\n## References\n- [Mega Man X Dash Analysis](https://example.com)",
-        color: "#9b59b6"
+        text: "# Air Dash\n\n- **Description**: Quick horizontal movement while airborne.\n- **Use Case**: Action games, Platformers.\n- **Difficulty**: Medium\n\n## Implementation Notes\n- Disable gravity during dash\n- Apply velocity in input direction\n- Set dash duration timer\n\n## References\n- [Mega Man X Dash Analysis](https://megaman.capcom.com)\n- [Celeste Dash Mechanics](https://celestegame.com)",
+        color: "#9b59b6",
+        image: "https://media.giphy.com/media/3o7btNa0RUYa5E7iiQ/giphy.gif",
+        imageAlt: "Air dash animation from Mega Man X"
       },
       {
         id: "ground_pound",
@@ -96,8 +110,10 @@
         y: 400,
         width: 300,
         height: 200,
-        text: "# Ground Pound\n\n- **Description**: Rapidly descend and impact the ground.\n- **Use Case**: Platformers, Action games.\n- **Difficulty**: Easy\n\n## Implementation Notes\n- Cancel horizontal momentum\n- Apply strong downward force\n- Trigger impact effect on landing\n\n## References\n- [Mario Ground Pound History](https://example.com)",
-        color: "#f39c12"
+        text: "# Ground Pound\n\n- **Description**: Rapidly descend and impact the ground.\n- **Use Case**: Platformers, Action games.\n- **Difficulty**: Easy\n\n## Implementation Notes\n- Cancel horizontal momentum\n- Apply strong downward force\n- Trigger impact effect on landing\n\n## References\n- [Mario Ground Pound History](https://mario.nintendo.com)\n- [Super Mario Odyssey](https://supermariobrothers.io)",
+        color: "#f39c12",
+        image: "https://media.giphy.com/media/FWcoE5AkG3BRe/giphy.gif",
+        imageAlt: "Mario ground pound animation"
       }
     ],
     edges: [

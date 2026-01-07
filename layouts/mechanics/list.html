@@ -53,24 +53,46 @@
   
   .mechanics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
     margin-bottom: 40px;
   }
   
   .mechanic-card {
     background: var(--bg-color, white);
     border: 2px solid var(--border-color, #e0e0e0);
-    border-radius: 12px;
-    padding: 20px;
+    border-radius: 16px;
+    overflow: hidden;
     transition: all 0.3s ease;
     cursor: pointer;
   }
   
   .mechanic-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.18);
     border-color: var(--accent-color, #667eea);
+  }
+  
+  .card-image {
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+    background: var(--footer-bg, #f8f9fa);
+  }
+  
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .mechanic-card:hover .card-image img {
+    transform: scale(1.05);
+  }
+  
+  .card-content {
+    padding: 20px;
   }
   
   .mechanic-card h3 {
@@ -87,19 +109,36 @@
     height: 16px;
     border-radius: 50%;
     flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   }
   
   .mechanic-card p {
-    margin: 0;
+    margin: 0 0 12px 0;
     color: var(--link-color, #7f8c8d);
     font-size: 0.95rem;
     line-height: 1.5;
   }
   
-  .mechanic-card .connections {
-    margin-top: 12px;
+  .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .use-case {
+    font-size: 0.8rem;
+    color: var(--link-color, #7f8c8d);
+    background: var(--footer-bg, #f8f9fa);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  
+  .connections {
     font-size: 0.85rem;
     color: var(--accent-color, #667eea);
+    font-weight: 600;
   }
   
   .cta-section {
@@ -147,28 +186,72 @@
   // Load mechanics data for the list view
   // Note: This data is intentionally embedded at build time for static site generation.
   // The mechanics array corresponds to the .canvas files in /content/mechanics/.
-  // For dynamic loading, consider using Hugo's data templates or fetching .canvas files via JavaScript.
+  // 
+  // HOW TO ADD YOUR OWN MECHANICS:
+  // 1. Create a new .canvas file in /content/mechanics/ (e.g., your_mechanic.canvas)
+  // 2. Follow the JSONCanvas format with nodes and edges arrays
+  // 3. Each node needs: id, type, x, y, width, height, text, color
+  // 4. Optional: Add image/imageAlt for visual preview
+  // 5. Rebuild the site to see your changes
   (function() {
     const mechanicsData = {{ .Site.Data.mechanics | jsonify | default "null" }};
     const container = document.getElementById('mechanics-list');
     
     // Static list of mechanics - corresponds to .canvas files in /content/mechanics/
     const mechanics = [
-      { id: 'wall_jump', name: 'Wall Jump', color: '#e74c3c', description: 'Allows the player to jump off walls.', connections: 1 },
-      { id: 'double_jump', name: 'Double Jump', color: '#3498db', description: 'Allows the player to jump again while in mid-air.', connections: 1 },
-      { id: 'air_dash', name: 'Air Dash', color: '#9b59b6', description: 'Quick horizontal movement while airborne.', connections: 0 },
-      { id: 'ground_pound', name: 'Ground Pound', color: '#f39c12', description: 'Rapidly descend and impact the ground.', connections: 1 }
+      { 
+        id: 'wall_jump', 
+        name: 'Wall Jump', 
+        color: '#e74c3c', 
+        description: 'Allows the player to jump off walls.', 
+        connections: 1,
+        image: 'https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif',
+        useCase: 'Platformers, Metroidvanias'
+      },
+      { 
+        id: 'double_jump', 
+        name: 'Double Jump', 
+        color: '#3498db', 
+        description: 'Allows the player to jump again while in mid-air.', 
+        connections: 1,
+        image: 'https://media.giphy.com/media/xT9IgzoKnwFNmISR8I/giphy.gif',
+        useCase: 'Platformers, Action games'
+      },
+      { 
+        id: 'air_dash', 
+        name: 'Air Dash', 
+        color: '#9b59b6', 
+        description: 'Quick horizontal movement while airborne.', 
+        connections: 0,
+        image: 'https://media.giphy.com/media/3o7btNa0RUYa5E7iiQ/giphy.gif',
+        useCase: 'Action games, Platformers'
+      },
+      { 
+        id: 'ground_pound', 
+        name: 'Ground Pound', 
+        color: '#f39c12', 
+        description: 'Rapidly descend and impact the ground.', 
+        connections: 1,
+        image: 'https://media.giphy.com/media/FWcoE5AkG3BRe/giphy.gif',
+        useCase: 'Platformers, Action games'
+      }
     ];
     
     if (mechanics.length > 0) {
       container.innerHTML = mechanics.map(m => `
         <div class="mechanic-card" onclick="window.location.href='/mechanics-graph#${m.id}'">
-          <h3>
-            <span class="color-indicator" style="background: ${m.color};"></span>
-            ${m.name}
-          </h3>
-          <p>${m.description}</p>
-          <div class="connections">${m.connections} connection${m.connections !== 1 ? 's' : ''}</div>
+          ${m.image ? `<div class="card-image"><img src="${m.image}" alt="${m.name}" loading="lazy"></div>` : ''}
+          <div class="card-content">
+            <h3>
+              <span class="color-indicator" style="background: ${m.color};"></span>
+              ${m.name}
+            </h3>
+            <p>${m.description}</p>
+            <div class="card-meta">
+              <span class="use-case">📎 ${m.useCase}</span>
+              <span class="connections">${m.connections} connection${m.connections !== 1 ? 's' : ''}</span>
+            </div>
+          </div>
         </div>
       `).join('');
     } else {

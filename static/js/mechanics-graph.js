@@ -23,7 +23,9 @@
       width: node.width,
       height: node.height,
       color: node.color || '#95a5a6',
-      type: node.type
+      type: node.type,
+      image: node.image || null,
+      imageAlt: node.imageAlt || ''
     }));
     
     const edges = canvasData.edges.map(edge => ({
@@ -367,10 +369,19 @@
     const panel = document.getElementById('mechanic-detail-panel');
     const content = document.getElementById('mechanic-detail-content');
     
+    // Build image HTML if available
+    const imageHtml = mechanic.image ? `
+      <div class="mechanic-visual">
+        <img src="${mechanic.image}" alt="${mechanic.imageAlt || mechanic.label}" class="mechanic-gif" loading="lazy">
+        <p class="image-caption">${mechanic.imageAlt || 'Visual demonstration'}</p>
+      </div>
+    ` : '';
+    
     content.innerHTML = `
       <div class="mechanic-detail-header" style="border-left: 4px solid ${mechanic.color}; padding-left: 15px;">
         <h2>${mechanic.label}</h2>
       </div>
+      ${imageHtml}
       <div class="mechanic-detail-body">
         ${parseMarkdown(mechanic.fullText)}
       </div>
@@ -378,10 +389,44 @@
         <h4>Connections</h4>
         ${getConnectionsHtml(mechanic)}
       </div>
+      <div class="mechanic-instructions">
+        <h4>📝 Create Your Own</h4>
+        <p>Add your own mechanics by creating a <code>.canvas</code> file in <code>/content/mechanics/</code></p>
+        <a href="#" onclick="showCanvasTemplate(); return false;" class="template-link">View Template →</a>
+      </div>
     `;
     
     panel.classList.remove('hidden');
   }
+  
+  // Show canvas file template
+  window.showCanvasTemplate = function() {
+    const template = `{
+  "nodes": [
+    {
+      "id": "your_mechanic_id",
+      "type": "text",
+      "x": 100,
+      "y": 100,
+      "width": 300,
+      "height": 200,
+      "text": "# Your Mechanic Name\\n\\n- **Description**: Brief description.\\n- **Use Case**: Where to use it.\\n- **Difficulty**: Easy/Medium/Hard\\n\\n## References\\n- [Example Link](https://example.com)",
+      "color": "#3498db",
+      "image": "https://your-gif-url.gif",
+      "imageAlt": "Description of the animation"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_id",
+      "fromNode": "your_mechanic_id",
+      "toNode": "other_mechanic_id",
+      "label": "combo"
+    }
+  ]
+}`;
+    alert('JSONCanvas Template:\n\n' + template);
+  };
   
   function getConnectionsHtml(mechanic) {
     const connections = data.edges.filter(e => 

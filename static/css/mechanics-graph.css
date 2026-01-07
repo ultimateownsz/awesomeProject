@@ -119,6 +119,34 @@
   text-decoration: underline;
 }
 
+/* Mechanic Visual (GIF/Image) */
+.mechanic-visual {
+  margin: 15px 0 20px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--footer-bg, #f8f9fa);
+  border: 1px solid var(--border-color, #e0e0e0);
+}
+
+.mechanic-gif {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.image-caption {
+  margin: 0;
+  padding: 10px 15px;
+  font-size: 0.85rem;
+  color: var(--link-color, #7f8c8d);
+  text-align: center;
+  font-style: italic;
+  background: var(--bg-color, white);
+  border-top: 1px solid var(--border-color, #e0e0e0);
+}
+
 .mechanic-connections {
   margin-top: 25px;
   padding-top: 20px;
@@ -129,6 +157,50 @@
   margin: 0 0 15px 0;
   font-size: 1.1rem;
   color: var(--text-color, #2c3e50);
+}
+
+/* Create Your Own Section */
+.mechanic-instructions {
+  margin-top: 25px;
+  padding: 15px;
+  background: linear-gradient(135deg, var(--accent-color, #667eea) 0%, #764ba2 100%);
+  border-radius: 10px;
+  color: white;
+}
+
+.mechanic-instructions h4 {
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+  color: white;
+}
+
+.mechanic-instructions p {
+  margin: 0 0 10px 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.mechanic-instructions code {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.template-link {
+  color: white !important;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.template-link:hover {
+  background: rgba(255, 255, 255, 0.3);
+  text-decoration: none !important;
 }
 
 .connection-item {
