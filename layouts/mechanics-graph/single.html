@@ -53,7 +53,10 @@
 
 <!-- JSONCanvas Data from mechanic files -->
 <script>
-  // JSONCanvas mechanics data - parsed from .canvas files
+  // JSONCanvas mechanics data - embedded during Hugo build from .canvas files
+  // Note: This data is intentionally embedded at build time for static site generation.
+  // For dynamic loading, consider using Hugo's data templates or a JavaScript fetch approach.
+  // The .canvas files in /content/mechanics/ serve as the source of truth for this data.
   window.mechanicsCanvasData = {
     nodes: [
       {

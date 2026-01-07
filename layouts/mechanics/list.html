@@ -144,12 +144,15 @@
 </style>
 
 <script>
-  // Load mechanics from canvas files
+  // Load mechanics data for the list view
+  // Note: This data is intentionally embedded at build time for static site generation.
+  // The mechanics array corresponds to the .canvas files in /content/mechanics/.
+  // For dynamic loading, consider using Hugo's data templates or fetching .canvas files via JavaScript.
   (function() {
     const mechanicsData = {{ .Site.Data.mechanics | jsonify | default "null" }};
     const container = document.getElementById('mechanics-list');
     
-    // Static list of mechanics for now - in production this would be loaded dynamically
+    // Static list of mechanics - corresponds to .canvas files in /content/mechanics/
     const mechanics = [
       { id: 'wall_jump', name: 'Wall Jump', color: '#e74c3c', description: 'Allows the player to jump off walls.', connections: 1 },
       { id: 'double_jump', name: 'Double Jump', color: '#3498db', description: 'Allows the player to jump again while in mid-air.', connections: 1 },

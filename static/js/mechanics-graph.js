@@ -52,15 +52,42 @@
   
   // Parse markdown text to HTML for detail panel
   function parseMarkdown(text) {
-    return text
+    // First pass: convert markdown to HTML
+    let html = text
       .replace(/^### (.+)$/gm, '<h4>$1</h4>')
       .replace(/^## (.+)$/gm, '<h3>$1</h3>')
       .replace(/^# (.+)$/gm, '<h2>$1</h2>')
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g, '<em>$1</em>')
       .replace(/^- (.+)$/gm, '<li>$1</li>')
-      .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
-      .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank">$1</a>')
+      .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank">$1</a>');
+    
+    // Second pass: wrap consecutive <li> elements in <ul> tags
+    // Split by lines, group consecutive li elements, then wrap them
+    const lines = html.split('\n');
+    const result = [];
+    let inList = false;
+    
+    for (const line of lines) {
+      if (line.startsWith('<li>')) {
+        if (!inList) {
+          result.push('<ul>');
+          inList = true;
+        }
+        result.push(line);
+      } else {
+        if (inList) {
+          result.push('</ul>');
+          inList = false;
+        }
+        result.push(line);
+      }
+    }
+    if (inList) {
+      result.push('</ul>');
+    }
+    
+    return result.join('\n')
       .replace(/\n\n/g, '<br><br>')
       .replace(/\n/g, '<br>');
   }
@@ -71,14 +98,20 @@
   const nodeIds = new Set(data.nodes.map(n => n.id));
   data.edges = data.edges.filter(e => nodeIds.has(e.source) && nodeIds.has(e.target));
 
-  // Configuration
+  // Configuration - centralized constants for graph layout and appearance
   const config = {
     width: Math.max(600, window.innerWidth - 40),
     height: Math.max(600, window.innerHeight - 300),
     nodeRadius: 25,
     linkDistance: 180,
     chargeStrength: -400,
-    labelOffset: 35
+    labelOffset: 35,
+    // Hierarchical layout settings
+    hierarchicalLinkDistance: 120,
+    hierarchicalChargeStrength: -500,
+    hierarchicalXStrength: 0.1,
+    hierarchicalYStrength: 0.5,
+    hierarchicalYSpacing: 100
   };
 
   // Create SVG container
@@ -395,12 +428,12 @@
     
     if (layout === 'hierarchical') {
       simulation
-        .force('link', d3.forceLink(data.edges).id(d => d.id).distance(120))
-        .force('charge', d3.forceManyBody().strength(-500))
-        .force('x', d3.forceX(config.width / 2).strength(0.1))
+        .force('link', d3.forceLink(data.edges).id(d => d.id).distance(config.hierarchicalLinkDistance))
+        .force('charge', d3.forceManyBody().strength(config.hierarchicalChargeStrength))
+        .force('x', d3.forceX(config.width / 2).strength(config.hierarchicalXStrength))
         .force('y', d3.forceY().y((d, i) => {
-          return 100 + i * 100;
-        }).strength(0.5));
+          return config.hierarchicalYSpacing + i * config.hierarchicalYSpacing;
+        }).strength(config.hierarchicalYStrength));
     } else if (layout === 'circular') {
       const angleStep = (2 * Math.PI) / data.nodes.length;
       const radius = Math.min(config.width, config.height) / 3;
